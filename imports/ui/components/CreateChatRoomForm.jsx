@@ -10,7 +10,7 @@ const validate = values => {
   return errors
 }
 
-class AddTodoForm extends Component {
+class CreateChatRoomForm extends Component {
   render() {
     const {
       fields: { text },
@@ -20,13 +20,13 @@ class AddTodoForm extends Component {
 
     return (<form onSubmit={handleSubmit}>
         <div className="input-group">
-          <label>Text</label>
-          <input type="text" placeholder="todo text" {...text}/>
+          <label>New Chat Room Name: </label>
+          <input type="text" placeholder="name..." {...text}/>
           {text.touched && text.error && <div>{text.error}</div>}
         </div>
         <div>
           <button type="submit" disabled={submitting}>
-            {submitting ? <i/> : <i/>} Create Todo
+            {submitting ? <i/> : <i/>} Create Chat Room
           </button>
         </div>
       </form>
@@ -34,14 +34,14 @@ class AddTodoForm extends Component {
   }
 }
 
-AddTodoForm.propTypes = {
+CreateChatRoomForm.propTypes = {
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired
 }
 
 export default reduxForm({
-  form: 'addTodoForm',
+  form: 'createChatRoomForm',
   fields,
   validate
-})(AddTodoForm)
+})(CreateChatRoomForm)

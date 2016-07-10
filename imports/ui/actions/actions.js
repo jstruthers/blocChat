@@ -2,10 +2,10 @@ import { callMethodPromise } from '../../helpers/helperPromises';
 
 import { Meteor } from 'meteor/meteor';
 
-export function createTodo(text){
+export function createChatRoom(text){
   return dispatch => {
-    callMethodPromise('addTodo', text)
-      .then(data=> dispatch(getAllTodos()))
+    callMethodPromise('createChatRoom', text)
+      .then(data=> dispatch(getAllChatRooms()))
       .catch(error=>{
         dispatch({
           type: 'SERVER_ERROR',
@@ -15,17 +15,17 @@ export function createTodo(text){
   };
 };
 
-export function setTodos(todos){
+export function setChatRooms(ChatRooms){
   return {
-    type: 'SET_TODOS',
-    todos
+    type: 'SET_CHAT_ROOMS',
+    ChatRooms
   }
 }
 
-export function getAllTodos(){
+export function getAllChatRooms(){
   return dispatch => {
-    callMethodPromise('getAllTodos')
-      .then(todos=> dispatch(setTodos(todos)))
+    callMethodPromise('getAllChatRooms')
+      .then(ChatRooms=> dispatch(setChatRooms(ChatRooms)))
       .catch(error=>{
         dispatch({
           type: 'SERVER_ERROR',

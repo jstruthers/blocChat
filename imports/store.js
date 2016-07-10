@@ -4,7 +4,7 @@ import {browserHistory} from 'react-router';
 import { Tracker } from 'meteor/tracker';
 
 //redux middleware
-import Todos from './api/collections/todos';
+import ChatRooms from './api/collections/chatRooms';
 import createLogger from 'redux-logger';
 import reduxThunk from 'redux-thunk';
 
@@ -17,8 +17,8 @@ const store = createStore(rootReducer, {}, applyMiddleware(...middleware));
 
 Tracker.autorun(() => {
   store.dispatch({
-    type: 'SET_TODOS',
-    todos: Todos.find().fetch(),
+    type: 'SET_CHAT_ROOMS',
+    chatRooms: ChatRooms.find().fetch(),
   });
 });
 

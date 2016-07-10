@@ -1,21 +1,21 @@
-import Todos, { createTodo } from './collections/todos';
+import ChatRooms, { createChatRoom } from './collections/chatRooms';
 
 Meteor.methods({
-  addTodo(text){
+  createChatRoom(text){
     if (this.isSimulation) {
       //server only method returns out on client
       return false;
     }
     if (!text){
-      throw new Meteor.Error('text missing', 'Cannot submit an empty message');
+      throw new Meteor.Error('name missing', 'Cannot submit an empty message');
     }
 
-    return createTodo(text);
+    return createChatRoom(text);
   },
-  getAllTodos(){
+  getAllChatRooms(){
     if (this.isSimulation) {
       return false;
     }
-    return Todos.find().fetch()
+    return ChatRooms.find().fetch()
   }
 });

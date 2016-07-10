@@ -2,27 +2,27 @@ import React, { Component } from 'react'
 import { Meteor } from 'meteor/meteor';
 import { connect } from 'react-redux';
 
-import Todos from '../../../api/collections/todos';
-import AddTodoForm from '../AddTodoForm';
-import  { createTodo, getAllTodos } from '../../actions/actions';
+import ChatRooms from '../../../api/collections/chatRooms';
+import CreateChatRoomForm from '../CreateChatRoomForm';
+import  { createChatRoom, getAllChatRooms } from '../../actions/actions';
 
 class Home extends Component {
   componentWillMount() {
-    //this.props.subscribe('allTodos');
+    //this.props.subscribe('allchatRooms');
     console.log(this.props);
-    this.props.getAllTodos();
+    this.props.getAllChatRooms();
   }
   render(){
-    let { form, submitHandler, serverError, todos } = this.props;
+    let { form, submitHandler, serverError, chatRooms } = this.props;
     return (
       <div className="home">
         <div className="notifier">
           {serverError.error ? <div className="server-error">{serverError.error.reason}</div> : "" }
           <ul>
-            {todos.map((todo, i )=> <li key={i}>{todo.text}</li>)}
+            {chatRooms.map((chatRoom, i )=> <li key={i}>{chatRoom.text}</li>)}
           </ul>
         </div>
-        <AddTodoForm onSubmit={submitHandler.bind(null, form)} />
+        <CreateChatRoomForm onSubmit={submitHandler.bind(null, form)} />
       </div>
     )
   }
@@ -30,20 +30,21 @@ class Home extends Component {
 
 
 function mapStateToProps(state){
+  console.log(state.chatRooms);
   return {
     serverError: state.serverError,
-    todos: state.todos,
-    form: state.form.addTodoForm
+    chatRooms: state.chatRooms,
+    form: state.form.createChatRoomForm
   }
 }
 
 function mapDispatchToProps(dispatch){
   return {
     submitHandler: (form) => {
-      dispatch(createTodo(form.text.value.toLowerCase()))
+      dispatch(createChatRoom(form.text.value.toLowerCase()))
     },
-    getAllTodos: () => {
-      dispatch(getAllTodos())
+    getAllChatRooms: () => {
+      dispatch(getAllChatRooms())
     }
   }
 }
