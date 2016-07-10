@@ -1,5 +1,5 @@
-import Todos from './collections/todos';
+import ChatRooms from './collections/chatRooms';
 
-Meteor.publish('allTodos', function() {
-  return Todos.find({});
+Meteor.publish('allChatRooms', function() {
+  return ChatRooms.find({});
 });
