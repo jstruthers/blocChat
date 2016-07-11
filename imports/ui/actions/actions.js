@@ -2,9 +2,26 @@ import { callMethodPromise } from '../../helpers/helperPromises';
 
 import { Meteor } from 'meteor/meteor';
 
+////////////////////////////////////////
+//  CHAT ROOMS                        //
+////////////////////////////////////////
+
 export function createChatRoom(text){
   return dispatch => {
     callMethodPromise('createChatRoom', text)
+      .then(data=> dispatch(getAllChatRooms()))
+      .catch(error=>{
+        dispatch({
+          type: 'SERVER_ERROR',
+          error,
+        });
+      });
+  };
+};
+
+export function deleteChatRoom(id){
+  return dispatch => {
+    callMethodPromise('deleteChatRoom', id)
       .then(data=> dispatch(getAllChatRooms()))
       .catch(error=>{
         dispatch({
@@ -32,5 +49,24 @@ export function getAllChatRooms(){
           error
         });
       })
+  }
+}
+
+////////////////////////////////////////
+//  UI                                //
+////////////////////////////////////////
+
+export function toggleModal(opt) {
+  return {
+    type: 'TOGGLE_MODAL',
+    opt
+  }
+}
+
+export function getModalDimensions({pos, size}) {
+  return {
+    type: 'GET_MODAL_DIMENSIONS',
+    pos,
+    size
   }
 }

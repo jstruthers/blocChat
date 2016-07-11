@@ -3,10 +3,27 @@ $red = #ff4530;
 *
   box-sizing border-box
 
-body
-  background blue
+.main-container
+  position absolute
+  top 0
+  right 0
+  bottom 0
+  left 0
+
+.dim
+  position absolute
+  top 0
+  right 0
+  bottom 0
+  left 0
+  
+  z-index 1
+
+  background-color hsla(0, 0%, 0%, 65%)
+  
 
 #header
+  font-size 2em
   border-bottom solid 1px #ccc
 
 .home
@@ -15,6 +32,16 @@ body
 
   form
     width 100%
+
+.modal
+  width 200px
+  padding 20px
+
+  position absolute
+  z-index 2
+
+  border 1px solid #ccc
+  background white
 
 .intro
   text-align center
@@ -31,7 +58,12 @@ body
   display flex
   justify-content center
   align-items center
+  flex-direction column
   height 150px
+  background-color beige
+
+.row
+  position relative
 
 .input-group.input-group
   width 100%
@@ -41,7 +73,7 @@ body
     height 17px
   input
     display block
-    padding 18px
+    padding 5px
     width 100%
 
   .error
@@ -66,6 +98,23 @@ button[type="submit"]
   text-transform uppercase
   background white
   width 100%
+  transition 0.2s
+  &:hover
+    color white
+    background $red
+
+.closeBtn
+  display block
+  position absolute
+  
+  border-radius 5px
+  border 1px solid $red
+  color $red
+  outline 0
+  background white
+  width 2em
+  top -20px
+  left 198px
   transition 0.2s
   &:hover
     color white

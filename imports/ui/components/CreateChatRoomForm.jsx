@@ -11,6 +11,7 @@ const validate = values => {
 }
 
 class CreateChatRoomForm extends Component {
+  
   render() {
     const {
       fields: { text },
@@ -18,7 +19,8 @@ class CreateChatRoomForm extends Component {
       submitting
       } = this.props
 
-    return (<form onSubmit={handleSubmit}>
+    return (
+      <form onSubmit={handleSubmit}>
         <div className="input-group">
           <label>New Chat Room Name: </label>
           <input type="text" placeholder="name..." {...text}/>
