@@ -11,5 +11,11 @@ export function createChatRoom(text) {
   })
 }
 
+export function deleteChatRoom(id) {
+  return ChatRooms.remove({
+    _id: id
+  })
+}
+
 
 export default ChatRooms;

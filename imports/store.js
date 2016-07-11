@@ -13,7 +13,15 @@ import rootReducer from './ui/reducers/rootReducer';
 const logger = createLogger();
 const middleware = [reduxThunk, logger];
 
-const store = createStore(rootReducer, {}, applyMiddleware(...middleware));
+let storeState = {
+  ui: {
+    modal: {
+      isOpen: false
+    }
+  }
+}
+
+const store = createStore(rootReducer, storeState, applyMiddleware(...middleware));
 
 Tracker.autorun(() => {
   store.dispatch({

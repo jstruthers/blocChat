@@ -1,4 +1,4 @@
-import ChatRooms, { createChatRoom } from './collections/chatRooms';
+import ChatRooms, { createChatRoom, deleteChatRoom } from './collections/chatRooms';
 
 Meteor.methods({
   createChatRoom(text){
@@ -11,6 +11,17 @@ Meteor.methods({
     }
 
     return createChatRoom(text);
+  },
+  deleteChatRoom(id){
+    if (this.isSimulation) {
+      //server only method returns out on client
+      return false;
+    }
+    if (!id){
+      throw new Meteor.Error('id missing', 'Chat Room is undefined');
+    }
+
+    return deleteChatRoom(id);
   },
   getAllChatRooms(){
     if (this.isSimulation) {
