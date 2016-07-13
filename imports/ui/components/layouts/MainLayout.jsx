@@ -14,8 +14,7 @@ class Main extends React.Component {
         rightBound = m.pos.x + m.size.w,
         topBound = m.pos.y,
         bottomBound = m.pos.y + m.size.h;
-    console.log('left', leftBound, 'right', rightBound, 'top', topBound, 'bottom', bottomBound);
-    console.log('mouse', event.clientY, event.clientX);
+    
     if (!((event.clientX <= rightBound) && (event.clientX >= leftBound)
         && (event.clientY <= bottomBound) && (event.clientY >= topBound))) {
       dispatch(toggleModal(false));
@@ -25,6 +24,8 @@ class Main extends React.Component {
   render(){
 
     return (
+      <div>
+      <div className={ this.props.modalIsOpen ? 'dim' : ''} />
       <main className="main-container"
             onClick={ 
               this.props.modalIsOpen
@@ -34,6 +35,7 @@ class Main extends React.Component {
             {this.props.children}
           <Footer />
       </main>
+      </div>
     )
   }
 }

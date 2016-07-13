@@ -2,6 +2,12 @@ $red = #ff4530;
 
 *
   box-sizing border-box
+  
+/******************************/
+/*  HOME                      */
+/******************************/
+html
+  background-color deepskyblue
 
 .main-container
   position absolute
@@ -24,29 +30,45 @@ $red = #ff4530;
 
 #header
   font-size 2em
-  border-bottom solid 1px #ccc
+  border-bottom solid 3px purple
 
-.home
-  width 400px
+#main
+  position relative
+  width 800px
   margin 0 auto 0
 
-  form
-    width 100%
+.row
+  display flex
+  width 100%
+
+.column
+  display flex
+  justify-content flex-start
+  align-items flex-start
+  align-content space-between
+  flex-direction column
+
+/******************************/
+/*  MENU                      */
+/******************************/
+
+.menu
+  width 300px
+  padding 10px
+  border-left 3px solid purple
+  border-right 3px solid purple
 
 .modal
   width 200px
   padding 20px
 
   position absolute
+  left 0
+  top 0
   z-index 2
 
   border 1px solid #ccc
   background white
-
-.intro
-  text-align center
-  font-size 18px
-  line-height 1.3em
 
 .server-error
   color $red
@@ -54,16 +76,70 @@ $red = #ff4530;
   font-size 18px
   line-height 1.3em
 
-.notifier
-  display flex
-  justify-content center
-  align-items center
-  flex-direction column
-  height 150px
-  background-color beige
 
-.row
-  position relative
+/******************************/
+/*  CHAT ROOM                 */
+/******************************/
+
+.chat-room
+  border-right 3px solid purple
+  width 500px
+  padding 10px
+  &-list
+    width 66%
+    margin 10px
+  &-list-item
+    padding 10px
+
+    font-size 1.6em
+    color purple
+    &:hover
+      cursor pointer
+      color ghostwhite
+      button
+        visibility visible
+        float right
+    span
+      float left
+    div
+      clear both
+    button
+      visibility hidden
+  &-header
+    width 200px
+    border-bottom 2px solid purple
+  &-title
+    font-size 1.4em
+  &-occupant-list
+    height 0px
+  &-message-box
+    margin 15px
+    width 440px
+    height 300px
+    border 1px solid purple
+    border-radius 15px
+  &-input-field
+    padding 5px
+  &-user-icon
+    display inline-block
+    font-size 1.5em
+    width 25px
+    height 25px
+    
+    text-align center
+    border-radius 50%
+    background-color purple
+    color white
+  &-username
+    display inline-block
+    margin-left 20px
+    width 200px
+    font-size 1.2em
+    border-bottom 2px solid purple
+
+/******************************/
+/*  FORM                      */
+/******************************/
 
 .input-group.input-group
   width 100%
@@ -87,15 +163,21 @@ $red = #ff4530;
     top 22px
     width 50%
 
+/******************************/
+/*  BUTTONS                   */
+/******************************/
+
 button[type="submit"]
   border-radius 5px
   border 1px solid $red
   margin-top 20px
+
   color $red
   outline 0
   font-size 12px
   padding 10px 0
   text-transform uppercase
+
   background white
   width 100%
   transition 0.2s
@@ -103,7 +185,24 @@ button[type="submit"]
     color white
     background $red
 
-.closeBtn
+.modal-btn
+  border-radius 5px
+  border 1px solid purple
+  margin-top 20px
+
+  color purple
+  outline 0
+  font-size 12px
+  padding 10px
+  text-transform uppercase
+
+  background white
+  transition 0.2s
+  &:hover
+    color white
+    background purple
+
+.close-btn
   display block
   position absolute
   

@@ -9,7 +9,8 @@ class Modal extends Component {
     return (
       <div className="row">
         <button type="button"
-              onClick={ this.props.toggleModal }>
+                className="modal-btn"
+                onClick={ this.props.toggleModal }>
           { this.props.buttonText }
         </button>
       { this.props.modalIsOpen ?
@@ -18,8 +19,8 @@ class Modal extends Component {
               if (div) {
                 this.props.getModalDimensions({
                   pos: {
-                    x: div.parentNode.offsetLeft,
-                    y: div.offsetTop + div.parentNode.offsetTop
+                    x: div.offsetParent.offsetLeft,
+                    y: div.offsetParent.offsetTop
                   },
                   size: {
                     w: div.offsetWidth,

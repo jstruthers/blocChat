@@ -16,7 +16,6 @@ export function httpPromise(type, url, options){
   return promise;
 }
 
-
 export function callMethodPromise(name, ...args){
   return new Promise(function(resolve, reject){
     Meteor.call(name, ...args, function(err, data){
