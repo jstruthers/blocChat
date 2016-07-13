@@ -1,20 +1,20 @@
 import React, { Component, PropTypes } from 'react'
 import { reduxForm } from 'redux-form'
-export const fields = [ 'title' ];
+export const fields = [ 'text' ];
 
 const validate = values => {
   const errors = {}
-  if (!values.title) {
-    errors.title = 'This field is required'
+  if (!values.text) {
+    errors.text = 'This field is required'
   }
   return errors
 }
 
-class CreateChatRoomForm extends Component {
+class MessageForm extends Component {
   
   render() {
     const {
-      fields: { title },
+      fields: { text },
       handleSubmit,
       submitting
       } = this.props
@@ -22,13 +22,12 @@ class CreateChatRoomForm extends Component {
     return (
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-          <label>New Chat Room Name: </label>
-          <input type="text" placeholder="name..." {...title}/>
-          {title.touched && title.error && <div>{title.error}</div>}
+          <input type="text" placeholder="type here..." {...text}/>
+          {text.touched && text.error && <div>{text.error}</div>}
         </div>
         <div>
           <button type="submit" disabled={submitting}>
-            {submitting ? <i/> : <i/>} Create Chat Room
+            {submitting ? <i/> : <i/>} Post
           </button>
         </div>
       </form>
@@ -36,14 +35,14 @@ class CreateChatRoomForm extends Component {
   }
 }
 
-CreateChatRoomForm.propTypes = {
+MessageForm.propTypes = {
   fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   submitting: PropTypes.bool.isRequired
 }
 
 export default reduxForm({
-  form: 'createChatRoomForm',
+  form: 'messageForm',
   fields,
   validate
-})(CreateChatRoomForm)
+})(MessageForm);
