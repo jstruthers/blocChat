@@ -32,7 +32,7 @@ class Main extends React.Component {
                 ? this.modalHandler.bind(this, this.props.dispatch)
                 : null }>
           <Header />
-            {this.props.children}
+            { this.props.children }
           <Footer />
       </main>
       </div>
