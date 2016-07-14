@@ -1,4 +1,5 @@
 import ChatRooms, { createChatRoom, deleteChatRoom, toggleSelectedChatRoom, logMessage } from './collections/chatRooms';
+import { Meteor } from 'meteor/meteor'
 
 Meteor.methods({
   createChatRoom(title) {
@@ -50,5 +51,12 @@ Meteor.methods({
     }
 
     return logMessage(id, text);
+  },
+  getCurrentUser() {
+    console.log('getting current user', Meteor.users.findOne(Meteor.userId()));
+    if (this.isSimulation) {
+      return false;
+    }
+    return Meteor.users.findOne(Meteor.userId());
   }
 });

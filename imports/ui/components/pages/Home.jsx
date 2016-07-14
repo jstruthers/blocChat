@@ -23,7 +23,6 @@ class Home extends Component {
   }
 
   render(){
-    console.log(Meteor);
     let { deleteChatRoom,
           toggleModal,
           chatRoomForm,

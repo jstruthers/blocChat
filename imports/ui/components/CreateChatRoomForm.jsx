@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
 import { reduxForm } from 'redux-form'
-export const fields = [ 'title' ];
 
 const validate = values => {
   const errors = {}
@@ -44,6 +43,6 @@ CreateChatRoomForm.propTypes = {
 
 export default reduxForm({
   form: 'createChatRoomForm',
-  fields,
+  fields: [ 'title' ],
   validate
 })(CreateChatRoomForm)
