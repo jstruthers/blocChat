@@ -15,7 +15,8 @@ class Main extends React.Component {
         topBound = m.pos.y,
         bottomBound = m.pos.y + m.size.h;
     if (!((event.clientX <= rightBound) && (event.clientX >= leftBound)
-        && (event.clientY <= bottomBound) && (event.clientY >= topBound))) {
+        && (event.clientY <= bottomBound) && (event.clientY >= topBound))
+        && this.props.currentUser) {
       dispatch(toggleModal(false));
     }
   }
@@ -31,7 +32,7 @@ class Main extends React.Component {
     return (
       <div>
         <main className="main-container"
-              onClick={ 
+              onClick={
                 modalIsOpen
                   ? this.modalHandler.bind(this, dispatch)
                   : null }>

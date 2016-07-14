@@ -4,10 +4,35 @@ $red = #ff4530;
   box-sizing border-box
   
 /******************************/
+/*  HEADER                    */
+/******************************/
+
+#header
+  font-size 2em
+  height 120px
+
+.logo
+  position absolute
+  width 500px
+  height 100px
+  left 60%
+  top 30px
+
+.user-profile-header
+  margin-left 30px
+  margin-top 30px
+  padding-left 10px
+  
+  clear right
+  border-left 3px solid white
+
+/******************************/
 /*  HOME                      */
 /******************************/
 html
-  background-color deepskyblue
+  background-image url("/images/bg.png")
+  background-size cover
+  background-repeat no-repeat
 
 .main-container
   position absolute
@@ -15,6 +40,7 @@ html
   right 0
   bottom 0
   left 0
+  color white
 
 .dim
   position absolute
@@ -26,16 +52,13 @@ html
   z-index 1
 
   background-color hsla(0, 0%, 0%, 65%)
-  
 
-#header
-  font-size 2em
-  border-bottom solid 3px purple
-
-#main
-  position relative
+#home
+  position absolute
+  top 250px
+  left 100px
   width 800px
-  margin 0 auto 0
+  background-color hsla(0, 0%, 0%, 35%)
 
 .row
   display flex
@@ -85,9 +108,11 @@ html
   border-right 3px solid purple
   width 500px
   padding 10px
+
   &-list
     width 66%
     margin 10px
+
   &-list-item
     padding 10px
 
@@ -105,21 +130,28 @@ html
       clear both
     button
       visibility hidden
+
   &-header
     width 200px
     border-bottom 2px solid purple
+
   &-title
     font-size 1.4em
+
   &-occupant-list
     height 0px
+
   &-message-box
     margin 15px
     width 440px
     height 300px
     border 1px solid purple
     border-radius 15px
+    background-color hsla(0, 100%, 100%, 35%)
+
   &-input-field
     padding 5px
+
   &-user-icon
     display inline-block
     font-size 1.5em
@@ -130,12 +162,24 @@ html
     border-radius 50%
     background-color purple
     color white
+
   &-username
     display inline-block
     margin-left 20px
     width 200px
     font-size 1.2em
     border-bottom 2px solid purple
+    
+/******************************/
+/*  USER ACCOUNTS             */
+/******************************/
+
+.user-accounts
+  position relative
+  margin auto
+  width 400px
+  
+  padding 20px
 
 /******************************/
 /*  FORM                      */
@@ -162,10 +206,6 @@ html
     margin-left 15px
     top 22px
     width 50%
-
-/******************************/
-/*  FORM                      */
-/******************************/
 
 .login
   margin 20px

@@ -3,10 +3,10 @@ import { Meteor } from 'meteor/meteor';
 import { connect } from 'react-redux';
 import  { toggleModal, createChatRoom, logMessage, deleteChatRoom, getAllChatRooms, toggleSelectedChatRoom } from '../../actions/actions';
 
-import ChatRooms from '../../../api/collections/chatRooms';
 import ChatRoom from '../ChatRoom';
-import CreateChatRoomForm from '../CreateChatRoomForm';
+import CreateChatRoomForm from '../forms/CreateChatRoomForm';
 import Modal from '../helpers/Modal';
+import UserAccounts from './UserAccounts'
 
 class Home extends Component {
 
@@ -25,22 +25,22 @@ class Home extends Component {
   render(){
     let { deleteChatRoom,
           toggleModal,
+          currentUser,
           chatRoomForm,
           submitHandler,
           serverError,
           chatRooms } = this.props;
 
     return (
-      <div id="main" className="row">
-
+      <div id="home" className="row">
         <div className="column menu">
           {serverError.error ? <div className="server-error">{serverError.error.reason}</div> : "" }
-          
-          <Modal buttonText="Create Chat Room">
+
+          <Modal buttonText="Create Chat Room" hasButton="true">
             <button type="button" className="close-btn">X</button>
             <CreateChatRoomForm onSubmit={submitHandler.bind(null, chatRoomForm)} />
           </Modal>
-          
+
           <ul className="chat-room-list">
             { chatRooms.map((chatRoom, i ) => {
 
@@ -72,6 +72,7 @@ class Home extends Component {
 function mapStateToProps(state) {
   return {
     serverError: state.serverError,
+    currentUser: state.ui.currentUser,
     chatRooms: state.chatRooms,
     chatRoomForm: state.form.createChatRoomForm
   }
