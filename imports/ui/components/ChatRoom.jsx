@@ -4,7 +4,7 @@ import { logMessage, clearForm } from '../actions/actions'
 import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router'
 
-import MessageForm from './MessageForm';
+import MessageForm from './forms/MessageForm';
 
 const ChatRoom = ({ user, icon, room, messageForm, submitHandler }) => {
   console.log(room.messageLog);
