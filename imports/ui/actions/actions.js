@@ -102,3 +102,28 @@ export function getModalDimensions({pos, size}) {
     size
   }
 }
+
+////////////////////////////////////////
+//  USERS                             //
+////////////////////////////////////////
+
+export function getCurrentUser(){
+  return dispatch => {
+    callMethodPromise('getCurrentUser')
+      .then(user => dispatch(updateCurrentUser(user)))
+      .catch(error=>{
+        dispatch({
+          type: 'SERVER_ERROR',
+          error
+        });
+      })
+  }
+}
+
+export function updateCurrentUser(user) {
+  console.log(user);
+  return {
+    type: 'UPDATE_CURRENT_USER',
+    user
+  }
+}

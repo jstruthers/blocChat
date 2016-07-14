@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
 import { connect } from 'react-redux';
-import  { toggleModal } from '../../actions/actions';
+import  { toggleModal, getCurrentUser } from '../../actions/actions';
 import ReactDOM from 'react-dom';
 
 class Main extends React.Component {
@@ -14,27 +14,32 @@ class Main extends React.Component {
         rightBound = m.pos.x + m.size.w,
         topBound = m.pos.y,
         bottomBound = m.pos.y + m.size.h;
-    
     if (!((event.clientX <= rightBound) && (event.clientX >= leftBound)
         && (event.clientY <= bottomBound) && (event.clientY >= topBound))) {
       dispatch(toggleModal(false));
     }
   }
   
-  render(){
+  componentDidMount() {
+    this.props.dispatch(getCurrentUser());
+  }
+  
+  render() {
 
+    let { dispatch, modalIsOpen, currentUser, children } = this.props;
+    
     return (
       <div>
-      <div className={ this.props.modalIsOpen ? 'dim' : ''} />
-      <main className="main-container"
-            onClick={ 
-              this.props.modalIsOpen
-                ? this.modalHandler.bind(this, this.props.dispatch)
-                : null }>
-          <Header />
-            {this.props.children}
+        <main className="main-container"
+              onClick={ 
+                modalIsOpen
+                  ? this.modalHandler.bind(this, dispatch)
+                  : null }>
+          <div className={ modalIsOpen ? 'dim' : ''} />
+          <Header currentUser={ currentUser } />
+            { children }
           <Footer />
-      </main>
+        </main>
       </div>
     )
   }
@@ -43,6 +48,7 @@ class Main extends React.Component {
 function mapStateToProps(state) {
   return {
     modal: state.ui.modal,
+    currentUser: state.ui.currentUser,
     modalIsOpen: state.ui.modal.isOpen
   }
 }

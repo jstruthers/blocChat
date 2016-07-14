@@ -17,6 +17,14 @@ function uiReducer(state = [], action = {}){
       
       newState.modal.pos = action.pos;
       newState.modal.size = action.size;
+      
+      return {...newState, ...state}
+    
+    case 'UPDATE_CURRENT_USER':
+      
+      newState.currentUser = action.user;
+      
+      return {...newState, ...state}
 
     default:
       return state;

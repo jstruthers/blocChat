@@ -7,7 +7,6 @@ import ChatRooms from '../../../api/collections/chatRooms';
 import ChatRoom from '../ChatRoom';
 import CreateChatRoomForm from '../CreateChatRoomForm';
 import Modal from '../helpers/Modal';
-import AccountsUIWrapper from '../helpers/AccountsUIWrapper';
 
 class Home extends Component {
 
@@ -24,7 +23,6 @@ class Home extends Component {
   }
 
   render(){
-    
     let { deleteChatRoom,
           toggleModal,
           chatRoomForm,
@@ -37,8 +35,6 @@ class Home extends Component {
 
         <div className="column menu">
           {serverError.error ? <div className="server-error">{serverError.error.reason}</div> : "" }
-          
-          <AccountsUIWrapper id="login" />
           
           <Modal buttonText="Create Chat Room">
             <button type="button" className="close-btn">X</button>
