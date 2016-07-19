@@ -2,6 +2,7 @@ import { applyMiddleware, createStore, compose } from 'redux';
 import {syncHistoryWithStore} from 'react-router-redux';
 import {browserHistory} from 'react-router';
 import { Tracker } from 'meteor/tracker';
+import { Meteor } from 'meteor/meteor';
 
 //redux middleware
 import ChatRooms from './api/collections/chatRooms';
@@ -28,6 +29,10 @@ Tracker.autorun(() => {
     type: 'SET_CHAT_ROOMS',
     chatRooms: ChatRooms.find().fetch(),
   });
+  store.dispatch({
+    type: 'SET_CURRENT_USER',
+    currentUser: Meteor.users.find().fetch()
+  })
 });
 
 export default store;

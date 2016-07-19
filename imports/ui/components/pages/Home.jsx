@@ -1,12 +1,10 @@
 import React, { Component } from 'react'
-import { Meteor } from 'meteor/meteor';
 import { connect } from 'react-redux';
-import  { toggleModal, createChatRoom, logMessage, deleteChatRoom, getAllChatRooms, toggleSelectedChatRoom } from '../../actions/actions';
+import  { toggleModal, createChatRoom, deleteChatRoom, getAllChatRooms, toggleSelectedChatRoom } from '../../actions/actions';
 
 import ChatRoom from '../ChatRoom';
 import CreateChatRoomForm from '../forms/CreateChatRoomForm';
 import Modal from '../helpers/Modal';
-import UserAccounts from './UserAccounts'
 
 class Home extends Component {
 
@@ -25,44 +23,53 @@ class Home extends Component {
   render(){
     let { deleteChatRoom,
           toggleModal,
-          currentUser,
           chatRoomForm,
           submitHandler,
           serverError,
-          chatRooms } = this.props;
+          chatRooms,
+          currentUser } = this.props;
 
     return (
-      <div id="home" className="row">
-        <div className="column menu">
-          {serverError.error ? <div className="server-error">{serverError.error.reason}</div> : "" }
+      <div id="home" className="column">
 
-          <Modal buttonText="Create Chat Room" hasButton="true">
-            <button type="button" className="close-btn">X</button>
-            <CreateChatRoomForm onSubmit={submitHandler.bind(null, chatRoomForm)} />
-          </Modal>
+        {serverError.error ? <div className="error">{serverError.error.reason}</div> : "" }
 
-          <ul className="chat-room-list">
-            { chatRooms.map((chatRoom, i ) => {
+        <div className="menu row">
+          <div className="chat-room-list column">
+           
+            <h3 className="chat-room-list-title">Chat Room List</h3>
 
-              return (
-                <li className="chat-room-list-item" onClick={ this.handleChatRoomSelect.bind(this, chatRoom._id) } key={i}>
-                  <span>{chatRoom.title}</span>
-                  <button type="button" onClick={ deleteChatRoom.bind(null, chatRoom._id) }>
-                    X
-                  </button>
-                  <div/>
-                </li>)
-            })}
-          </ul>
+            <ul>
+              { chatRooms.map((chatRoom, i ) => {
+                console.log(currentUser);
+                return (
+                  <li className="chat-room-list-item" onClick={ this.handleChatRoomSelect.bind(this, chatRoom._id) } key={i}>
+                    <span>{chatRoom.title}</span>
+                    { chatRoom.createdBy._id === currentUser._id
+                        ? (<button type="button" onClick={ deleteChatRoom.bind(null, chatRoom._id) }>
+                             X
+                           </button>)
+                        : ""
+                    }
+                    <div/>
+                  </li>)
+              })}
+            </ul>
+            
+            <Modal buttonText="Create Chat Room" hasButton="true">
+              <button type="button" className="close-btn">X</button>
+              <CreateChatRoomForm onSubmit={submitHandler.bind(null, chatRoomForm)} />
+            </Modal>
 
+          </div>
+
+          { chatRooms.filter( chatRoom => chatRoom.isSelected )
+              .map( (selectedRoom, i) => 
+                   <ChatRoom
+                     key={ `selectedRoom${i}` }
+                     room={ selectedRoom }
+                    /> ) }
         </div>
-        { chatRooms.filter( chatRoom => chatRoom.isSelected )
-            .map( (selectedRoom, i) => 
-                 <ChatRoom
-                   key={ `selectedRoom${i}` }
-                   icon={ ':)' }
-                   room={ selectedRoom }
-                  /> ) }
       </div>
     )
   }
@@ -72,9 +79,9 @@ class Home extends Component {
 function mapStateToProps(state) {
   return {
     serverError: state.serverError,
-    currentUser: state.ui.currentUser,
     chatRooms: state.chatRooms,
-    chatRoomForm: state.form.createChatRoomForm
+    chatRoomForm: state.form.createChatRoomForm,
+    currentUser: state.ui.currentUser
   }
 }
 

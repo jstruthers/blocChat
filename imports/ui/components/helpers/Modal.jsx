@@ -8,7 +8,29 @@ class Modal extends Component {
     if (!this.props.hasButton) {
       this.props.toggleModal('true');
     }
-    console.log('in modal', this.props.modalIsOpen, this.props.hasButton)
+    
+//    window.addEventListener.bind(this, "scroll", updatePosition, false);
+//    window.addEventListener.bind(this, "resize", updatePosition, false);
+  }
+  
+  getPosition(el) {
+    let x = 0, y = 0;
+ 
+    while (el) {
+      if (el.tagName == "BODY") {
+        let xScroll = el.scrollLeft || document.documentElement.scrollLeft,
+            yScroll = el.scrollTop || document.documentElement.scrollTop;
+
+        x += (el.offsetLeft - xScroll + el.clientLeft);
+        y += (el.offsetTop - yScroll + el.clientTop);
+      } else {
+        x += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+        y += (el.offsetTop - el.scrollTop + el.clientTop);
+      }
+
+      el = el.offsetParent;
+    }
+    return { x, y };
   }
   
   render() {
@@ -30,11 +52,9 @@ class Modal extends Component {
           ? <div className="modal"
                  ref={ (div) => {
                   if (div) {
+                    let pos = this.getPosition(div);
                     this.props.getModalDimensions({
-                      pos: {
-                        x: div.offsetParent.offsetLeft,
-                        y: div.offsetParent.offsetTop
-                      },
+                      pos,
                       size: {
                         w: div.offsetWidth,
                         h: div.offsetHeight

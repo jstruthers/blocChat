@@ -4,11 +4,9 @@ import { reduxForm } from 'redux-form'
 const validate = values => {
   const errors = {}
   if (!values.username) {
-    errors.username = "Enter User Name"
-  } else if (!values.email) {
-    errors.email = "Enter email"
+    errors.username = "* Enter User Name"
   } else if (!values.password) {
-    errors.password = "Enter password"
+    errors.password = "* Enter password"
   }
   return errors
 }
@@ -18,40 +16,46 @@ class CreateNewUserForm extends Component {
   render() {
     
     const {
-      fields: { username, email, password },
       handleSubmit,
-      submitting
+      submitting,
+      fields: { username, email, password }
       } = this.props
     
     return (
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-          <label>Create New User</label>
-          <input type="text" placeholder="username" {...username} />
-          {username.touched && username.error && <div>{username.error}</div>}
-          <input type="text" placeholder="email" {...email} />
-          {email.touched && email.error && <div>{email.error}</div>}
-          <input type="text" placeholder="password" {...password} />
-          {password.touched && password.error && <div>{password.error}</div>}
+          <input type="text" placeholder="user name..." {...username}/>
+          {username.visited 
+            && !username.active
+            && username.error
+            && <span className="error">{ username.error }</span>}
         </div>
-        <div>
-          <button type="submit" disabled={submitting}>
-            {submitting ? <i/> : <i/>} Submit
-          </button>
+        <div className="input-group">
+          <input type="email" placeholder="email..." {...email}/>
         </div>
+        <div className="input-group">
+          <input type="password" placeholder="password..." {...password}/>
+          {password.visited 
+            && !password.active
+            && password.error
+            && <span className="error">{ password.error }</span>}
+        </div>
+        <button type="submit" disabled={submitting || !password.value || !username.value}>
+          {submitting ? <i/> : <i/>} Submit
+        </button>
       </form>
     )
   }
 }
 
 CreateNewUserForm.propTypes = {
-  fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired
+  submitting: PropTypes.bool.isRequired,
+  fields: PropTypes.object.isRequired
 }
 
 export default reduxForm({
   form: 'createNewUserForm',
-  fields: [ 'username', 'email', 'password' ],
+  fields: ['username', 'email', 'password'],
   validate
 })(CreateNewUserForm);
