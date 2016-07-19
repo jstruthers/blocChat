@@ -6,14 +6,15 @@ import { Meteor } from 'meteor/meteor';
 //  CHAT ROOMS                        //
 ////////////////////////////////////////
 
-export function createChatRoom(name){
+export function createChatRoom(title){
   return dispatch => {
-    callMethodPromise('createChatRoom', name)
+    callMethodPromise('createChatRoom', title)
       .then(data => dispatch(getAllChatRooms()))
       .catch(error=>{
         dispatch({
           type: 'SERVER_ERROR',
           error,
+          label: 'createChatRoom'
         });
       });
   };
@@ -27,6 +28,7 @@ export function deleteChatRoom(id){
         dispatch({
           type: 'SERVER_ERROR',
           error,
+          label: 'deleteChatRoom'
         });
       });
   };
@@ -39,9 +41,10 @@ export function setChatRooms(chatRooms){
   }
 }
 
-export function clearForm(){
+export function clearForm(fields) {
   return {
-    type: 'CLEAR_FORM'
+    type: 'CLEAR_FORM',
+    fields
   }
 }
 
@@ -52,20 +55,25 @@ export function getAllChatRooms(){
       .catch(error=>{
         dispatch({
           type: 'SERVER_ERROR',
-          error
+          error,
+          label: 'getAllChatRooms'
         });
       })
   }
 }
 
-export function logMessage(id, text){
+export function logMessage(id, message){
+  let fields = {};
+  fields.message = null;
   return dispatch => {
-    callMethodPromise('logMessage', id, text)
+    callMethodPromise('logMessage', id, message)
       .then(data => dispatch(getAllChatRooms()))
+      .then(() => dispatch(clearForm(fields)))
       .catch(error=>{
         dispatch({
           type: 'SERVER_ERROR',
-          error
+          error,
+          label: 'logMessage'
         });
       })
   }
@@ -78,7 +86,8 @@ export function toggleSelectedChatRoom(id, bool){
       .catch(error=>{
         dispatch({
           type: 'SERVER_ERROR',
-          error
+          error,
+          label: 'toggleSelectedChatRoom'
         });
       })
   }
@@ -100,30 +109,5 @@ export function getModalDimensions({pos, size}) {
     type: 'GET_MODAL_DIMENSIONS',
     pos,
     size
-  }
-}
-
-////////////////////////////////////////
-//  USERS                             //
-////////////////////////////////////////
-
-export function getCurrentUser(){
-  return dispatch => {
-    callMethodPromise('getCurrentUser')
-      .then(user => dispatch(updateCurrentUser(user)))
-      .catch(error=>{
-        dispatch({
-          type: 'SERVER_ERROR',
-          error
-        });
-      })
-  }
-}
-
-export function updateCurrentUser(user) {
-  console.log(user);
-  return {
-    type: 'UPDATE_CURRENT_USER',
-    user
   }
 }

@@ -1,17 +1,15 @@
 import React from 'react'
-import { connect } from 'react-redux'
 import { Link, browserHistory } from 'react-router'
 import { getCurrentUser } from '../actions/actions'
 import { Meteor } from 'meteor/meteor'
 
-const Header = ({ currentUser, dispatch }) => {
-  
+export default ({ dispatch, currentUser }) => {
+
   function logOut(event) {
     Meteor.logout();
-    dispatch(getCurrentUser());
     browserHistory.push('/userAccounts');
   }
-  
+
   return (
     <header id="header">
       { currentUser
@@ -30,5 +28,3 @@ const Header = ({ currentUser, dispatch }) => {
     </header>
   )
 }
-
-export default connect()(Header);

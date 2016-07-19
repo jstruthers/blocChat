@@ -1,13 +1,13 @@
 import React, { PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { logMessage, clearForm } from '../actions/actions'
+import { logMessage } from '../actions/actions'
 import { Meteor } from 'meteor/meteor';
 import { Link } from 'react-router'
 
 import MessageForm from './forms/MessageForm';
 
-const ChatRoom = ({ user, icon, room, messageForm, submitHandler }) => {
-  console.log(room.messageLog);
+const ChatRoom = ({ user, room, messageForm, submitHandler }) => {
+
   return (
     <div className="column chat-room">
       <div className="row">
@@ -24,22 +24,41 @@ const ChatRoom = ({ user, icon, room, messageForm, submitHandler }) => {
       </div>
       
       <div className="chat-room-message-box">
-        { room.messageLog.map( (message, i) => <p key={ `message_${i}` }>{ message }</p> ) }
+        { room.messageLog.map( (message, i) => {
+            return (
+              <div key={ `message_${i}` }
+                   className="row chat-room-message">
+                <div className="column">
+                  <p className="row chat-room-message-text">{ message.text }</p>
+                  <p className="row chat-room-message-info">
+                    <i><span className="chat-room-message-author">
+                      - { message.author }
+                    </span>
+                    <span className="chat-room-message-time">
+                        { message.date.toLocaleTimeString() }
+                    </span>
+                    <span className="chat-room-message-date">
+                      { message.date.toLocaleDateString() }
+                    </span></i>
+                  </p>
+                </div>
+              </div>)
+          })
+        }
       </div>
 
       <div className="chat-room-input-field">
-        <span className="chat-room-user-icon">{ icon }</span>
         <span className="chat-room-username">{ user.username }</span>
+        <MessageForm onSubmit={submitHandler.bind(null, room._id, messageForm)} />
       </div>
-      <MessageForm onSubmit={submitHandler.bind(null, room._id, messageForm)} />
+
     </div>
   )
 }
 
 ChatRoom.propTypes = {
   user: PropTypes.object.isRequired,
-  room: PropTypes.object.isRequired,
-  icon: PropTypes.string.isRequired
+  room: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
@@ -54,8 +73,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch){
   return {
     submitHandler: (id, form) => {
-      dispatch(logMessage(id, form.text.value));
-      dispatch(clearForm());
+      dispatch(logMessage(id, form.message.value));
     }
   }
 }

@@ -2,7 +2,9 @@ import React from 'react';
 import Header from '../Header';
 import Footer from '../Footer';
 import { connect } from 'react-redux';
-import  { toggleModal, getCurrentUser } from '../../actions/actions';
+import { Meteor } from 'meteor/meteor';
+import { Link, browserHistory } from 'react-router';
+import  { toggleModal } from '../../actions/actions';
 import ReactDOM from 'react-dom';
 
 class Main extends React.Component {
@@ -21,10 +23,6 @@ class Main extends React.Component {
     }
   }
   
-  componentDidMount() {
-    this.props.dispatch(getCurrentUser());
-  }
-  
   render() {
 
     let { dispatch, modalIsOpen, currentUser, children } = this.props;
@@ -37,8 +35,8 @@ class Main extends React.Component {
                   ? this.modalHandler.bind(this, dispatch)
                   : null }>
           <div className={ modalIsOpen ? 'dim' : ''} />
-          <Header currentUser={ currentUser } />
-            { children }
+          <Header currentUser={ currentUser }/>
+          { this.props.children }
           <Footer />
         </main>
       </div>
@@ -49,8 +47,8 @@ class Main extends React.Component {
 function mapStateToProps(state) {
   return {
     modal: state.ui.modal,
-    currentUser: state.ui.currentUser,
-    modalIsOpen: state.ui.modal.isOpen
+    modalIsOpen: state.ui.modal.isOpen,
+    currentUser: state.ui.currentUser
   }
 }
 

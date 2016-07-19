@@ -11,7 +11,7 @@ function uiReducer(state = [], action = {}){
         newState.modal.isOpen = state.modal.isOpen ? false : true;
       }
 
-      return {...newState, ...state}
+      return {...newState, ...state};
     
     case 'GET_MODAL_DIMENSIONS':
       
@@ -20,11 +20,11 @@ function uiReducer(state = [], action = {}){
       
       return {...newState, ...state}
     
-    case 'UPDATE_CURRENT_USER':
+    case 'SET_CURRENT_USER':
       
-      newState.currentUser = action.user;
+      newState.currentUser = action.currentUser[0];
       
-      return {...newState, ...state}
+      return {...newState, ...state};
 
     default:
       return state;

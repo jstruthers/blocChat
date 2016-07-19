@@ -1,5 +1,4 @@
 import ChatRooms, { createChatRoom, deleteChatRoom, toggleSelectedChatRoom, logMessage } from './collections/chatRooms';
-import { Meteor } from 'meteor/meteor'
 
 Meteor.methods({
   createChatRoom(title) {
@@ -10,8 +9,11 @@ Meteor.methods({
     if (!title) {
       throw new Meteor.Error('name missing', 'Cannot create an untitled room');
     }
+    if (!Meteor.userId()) {
+      throw new Meteor.Error('Not logged in', 'You must log in to create a chat room');
+    }
 
-    return createChatRoom(title, [], [], false);
+    return createChatRoom(title, [], [], false, Meteor.user());
   },
   deleteChatRoom(id){
     if (this.isSimulation) {
@@ -20,6 +22,10 @@ Meteor.methods({
     }
     if (!id){
       throw new Meteor.Error('id missing', 'Chat Room is undefined');
+    }
+    console.log(ChatRooms.findOne(id).createdBy._id)
+    if (Meteor.userId() !== ChatRooms.findOne(id).createdBy._id) {
+      throw new Meteor.Error('Not permitted', "You can only delete the chat rooms you created!");
     }
 
     return deleteChatRoom(id);
@@ -49,14 +55,14 @@ Meteor.methods({
     if (!text) {
       throw new Meteor.Error('text missing', 'Cannot submit an empty message');
     }
+    if (!Meteor.userId()) {
+      throw new Meteor.Error('No author', 'You must be signed in to write a message');
+    }
 
-    return logMessage(id, text);
+    return logMessage(id, text, Meteor.user(), new Date());
   },
   getCurrentUser() {
-    console.log('getting current user', Meteor.users.findOne(Meteor.userId()));
-    if (this.isSimulation) {
-      return false;
-    }
-    return Meteor.users.findOne(Meteor.userId());
+    return Meteor.user();
   }
+  // Specify user permissions here, not
 });
