@@ -1,4 +1,4 @@
-![blocChat](https://github.com/jstruthers/blocChat/public/images/logo.png "blocChat")
+![blocChat](https://github.com/jstruthers/blocChat/blob/master/public/images/logo.png "blocChat")
 #### A Simple Chat App
 ---
 
