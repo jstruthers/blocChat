@@ -22,7 +22,6 @@ class UserAccounts extends Component {
   }
   
   goToHome(dispatch, clearForm, toggleModal, setCurrentUser) {
-    console.log('redirect')
     dispatch(toggleModal(false));
     let fields = {}
     fields.username = null;
@@ -41,7 +40,6 @@ class UserAccounts extends Component {
         other = Object.keys(this.state).filter(formKey => formKey !== form)[0],
         error = other.slice(0, -4);
     obj[other] = false;
-    console.log(error);
     obj[error + 'Error'] = null;
     obj[form] = !this.state[form];
     this.setState(obj);
