@@ -25,6 +25,11 @@ function uiReducer(state = [], action = {}){
       newState.currentUser = action.currentUser[0];
       
       return {...newState, ...state};
+    case 'UPDATE_SELECTED_ROOM':
+      
+      newState.selectedRoom =  true;
+      
+      return {...newState, ...state};
 
     default:
       return state;

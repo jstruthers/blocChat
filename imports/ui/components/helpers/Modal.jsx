@@ -8,9 +8,6 @@ class Modal extends Component {
     if (!this.props.hasButton) {
       this.props.toggleModal('true');
     }
-    
-//    window.addEventListener.bind(this, "scroll", updatePosition, false);
-//    window.addEventListener.bind(this, "resize", updatePosition, false);
   }
   
   getPosition(el) {
@@ -39,8 +36,8 @@ class Modal extends Component {
       <div className="row">
         { this.props.hasButton
             ? (<button type="button"
-                className="modal-btn"
-                onClick={ this.props.toggleModal }>
+                       className="modal-btn"
+                       onClick={ this.props.toggleModal }>
                 { this.props.buttonText
                     ? this.props.buttonText
                     : ''}
@@ -50,6 +47,7 @@ class Modal extends Component {
         
       { this.props.modalIsOpen
           ? <div className="modal"
+                 style={ this.props.hasButton ? { marginLeft: '20px' } : {}}
                  ref={ (div) => {
                   if (div) {
                     let pos = this.getPosition(div);
@@ -62,7 +60,7 @@ class Modal extends Component {
                     })
                   }
                 }}>
-              {this.props.children}
+              { this.props.children }
             </div>
             :
             "" }

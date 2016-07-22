@@ -13,7 +13,7 @@ class MessageForm extends Component {
     return (
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-          <input type="text" placeholder="type here..." {...message}/>
+          <textarea placeholder="type here..." {...message}/>
         </div>
         <button type="submit" disabled={submitting || !message.value}>
           {submitting ? <i/> : <i/>} Post

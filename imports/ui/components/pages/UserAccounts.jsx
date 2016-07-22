@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Accounts } from 'meteor/accounts-base'
 import { connect } from 'react-redux'
-import { toggleModal, displayError, clearForm } from '../../actions/actions'
+import { toggleModal, displayError, clearForm, setCurrentUser } from '../../actions/actions'
 import { Meteor } from 'meteor/meteor'
 import { browserHistory } from 'react-router'
 
@@ -19,6 +19,21 @@ class UserAccounts extends Component {
       logInError: null,
       newUserError: null
     }
+  }
+  
+  goToHome(dispatch, clearForm, toggleModal, setCurrentUser) {
+    console.log('redirect')
+    dispatch(toggleModal(false));
+    let fields = {}
+    fields.username = null;
+    fields.password = null;
+    dispatch(clearForm(fields));
+    dispatch(setCurrentUser())
+    browserHistory.push('/');
+  }
+  
+  goToUserAccounts(dispatch, setCurrentUser) {
+    dispatch(setCurrentUser())
   }
   
   toggleForm(form) {
@@ -102,13 +117,7 @@ function mapDispatchToProps(dispatch){
           if (error) {
             userAccounts.setState({newUserError: `* ${error.reason}`});
           } else {
-            dispatch(toggleModal(false));
-            let fields = {}
-            fields.username = null;
-            fields.email = null;
-            fields.password = null;
-            dispatch(clearForm(fields));
-            browserHistory.push('/home');
+            userAccounts.goToHome(userAccounts)
           }
         }
       );
@@ -121,18 +130,13 @@ function mapDispatchToProps(dispatch){
           if (error) {
             userAccounts.setState({logInError: `* ${error.reason}`});
           } else {
-            dispatch(toggleModal(false));
-            let fields = {}
-            fields.username = null;
-            fields.password = null;
-            dispatch(clearForm(fields));
-            browserHistory.push('/home');
+            Meteor.logoutOtherClients(
+              userAccounts.goToUserAccounts.bind(null, dispatch, setCurrentUser)
+            )
+            userAccounts.goToHome(dispatch, clearForm, toggleModal, setCurrentUser)
           }
         }
       );
-    },
-    getCurrentUser: () => {
-      dispatch(getCurrentUser());
     }
   }
 }

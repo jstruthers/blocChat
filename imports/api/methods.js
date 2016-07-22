@@ -23,7 +23,6 @@ Meteor.methods({
     if (!id){
       throw new Meteor.Error('id missing', 'Chat Room is undefined');
     }
-    console.log(ChatRooms.findOne(id).createdBy._id)
     if (Meteor.userId() !== ChatRooms.findOne(id).createdBy._id) {
       throw new Meteor.Error('Not permitted', "You can only delete the chat rooms you created!");
     }
@@ -64,5 +63,4 @@ Meteor.methods({
   getCurrentUser() {
     return Meteor.user();
   }
-  // Specify user permissions here, not
 });

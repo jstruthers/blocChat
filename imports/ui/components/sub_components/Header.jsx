@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, browserHistory } from 'react-router'
-import { getCurrentUser } from '../actions/actions'
+import { getCurrentUser } from '../../actions/actions'
 import { Meteor } from 'meteor/meteor'
 
 export default ({ dispatch, currentUser }) => {

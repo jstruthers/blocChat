@@ -29,10 +29,6 @@ Tracker.autorun(() => {
     type: 'SET_CHAT_ROOMS',
     chatRooms: ChatRooms.find().fetch(),
   });
-  store.dispatch({
-    type: 'SET_CURRENT_USER',
-    currentUser: Meteor.users.find().fetch()
-  })
 });
 
 export default store;
