@@ -1,47 +1,35 @@
 import React, { Component, PropTypes } from 'react'
 import { reduxForm } from 'redux-form'
 
-const validate = values => {
-  const errors = {}
-  if (!values.text) {
-    errors.text = 'This field is required'
-  }
-  return errors
-}
-
 class MessageForm extends Component {
   
   render() {
     const {
-      fields: { text },
       handleSubmit,
-      submitting
+      submitting,
+      fields: { message }
       } = this.props
 
     return (
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-          <input type="text" placeholder="type here..." {...text}/>
-          {text.touched && text.error && <div>{text.error}</div>}
+          <textarea placeholder="type here..." {...message}/>
         </div>
-        <div>
-          <button type="submit" disabled={submitting}>
-            {submitting ? <i/> : <i/>} Post
-          </button>
-        </div>
+        <button type="submit" disabled={submitting || !message.value}>
+          {submitting ? <i/> : <i/>} Post
+        </button>
       </form>
     )
   }
 }
 
 MessageForm.propTypes = {
-  fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired
+  submitting: PropTypes.bool.isRequired,
+  fields: PropTypes.object.isRequired
 }
 
 export default reduxForm({
   form: 'messageForm',
-  fields: [ 'text' ],
-  validate
+  fields: ['message']
 })(MessageForm);

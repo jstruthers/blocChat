@@ -4,9 +4,9 @@ import { reduxForm } from 'redux-form'
 const validate = values => {
   const errors = {}
   if (!values.username) {
-    errors.username = "Enter User Name"
+    errors.username = "* Enter User Name"
   } else if (!values.password) {
-    errors.password = "Enter password"
+    errors.password = "* Enter password"
   }
   return errors
 }
@@ -16,38 +16,44 @@ class LogInForm extends Component {
   render() {
     
     const {
-      fields: { username, email, password },
       handleSubmit,
-      submitting
+      resetForm,
+      submitting,
+      fields: { username, password }
       } = this.props
-    
+
     return (
       <form onSubmit={handleSubmit}>
         <div className="input-group">
-          <label>Log In</label>
-          <input type="text" placeholder="username" {...username} />
-          {username.touched && username.error && <div>{username.error}</div>}
-          <input type="text" placeholder="password" {...password} />
-          {password.touched && password.error && <div>{password.error}</div>}
+          <input type="text" placeholder="user name..." {...username}/>
+          {username.visited 
+            && !username.active
+            && username.error
+            && <span className="error">{ username.error }</span>}
         </div>
-        <div>
-          <button type="submit" disabled={submitting}>
-            {submitting ? <i/> : <i/>} Submit
-          </button>
+        <div className="input-group">
+          <input type="password" placeholder="password..." {...password}/>
+          {password.visited
+            && !password.active
+            && password.error
+            && <span className="error">{ password.error }</span>}
         </div>
+        <button type="submit" disabled={submitting || !password.value || !username.value}>
+          {submitting ? <i/> : <i/>} Submit
+        </button>
       </form>
     )
   }
 }
 
 LogInForm.propTypes = {
-  fields: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  submitting: PropTypes.bool.isRequired
+  submitting: PropTypes.bool.isRequired,
+  fields: PropTypes.object.isRequired
 }
 
 export default reduxForm({
   form: 'logInForm',
-  fields: [ 'username', 'password' ],
+  fields: ['username', 'password'],
   validate
 })(LogInForm);

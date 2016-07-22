@@ -5,12 +5,13 @@ if(Meteor.isServer){
   // server only requires here (import doesn't work inside if statement)
 }
 
-export function createChatRoom(title, messageLog, occupants, isSelected) {
+export function createChatRoom(title, messageLog, occupants, isSelected, createdBy) {
   return ChatRooms.insert({
     title,
     messageLog,
     occupants,
-    isSelected
+    isSelected,
+    createdBy
   })
 }
 
@@ -26,9 +27,9 @@ export function toggleSelectedChatRoom(id, bool) {
   });
 }
 
-export function logMessage(id, text) {
+export function logMessage(id, text, author, timestamp) {
   return ChatRooms.update( id, {
-    $push: { messageLog: text }
+    $push: { messageLog: { text, author: author.username, date: timestamp }}
   });
 }
 

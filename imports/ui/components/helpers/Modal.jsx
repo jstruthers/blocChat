@@ -8,7 +8,26 @@ class Modal extends Component {
     if (!this.props.hasButton) {
       this.props.toggleModal('true');
     }
-    console.log('in modal', this.props.modalIsOpen, this.props.hasButton)
+  }
+  
+  getPosition(el) {
+    let x = 0, y = 0;
+ 
+    while (el) {
+      if (el.tagName == "BODY") {
+        let xScroll = el.scrollLeft || document.documentElement.scrollLeft,
+            yScroll = el.scrollTop || document.documentElement.scrollTop;
+
+        x += (el.offsetLeft - xScroll + el.clientLeft);
+        y += (el.offsetTop - yScroll + el.clientTop);
+      } else {
+        x += (el.offsetLeft - el.scrollLeft + el.clientLeft);
+        y += (el.offsetTop - el.scrollTop + el.clientTop);
+      }
+
+      el = el.offsetParent;
+    }
+    return { x, y };
   }
   
   render() {
@@ -17,8 +36,8 @@ class Modal extends Component {
       <div className="row">
         { this.props.hasButton
             ? (<button type="button"
-                className="modal-btn"
-                onClick={ this.props.toggleModal }>
+                       className="modal-btn"
+                       onClick={ this.props.toggleModal }>
                 { this.props.buttonText
                     ? this.props.buttonText
                     : ''}
@@ -28,13 +47,12 @@ class Modal extends Component {
         
       { this.props.modalIsOpen
           ? <div className="modal"
+                 style={ this.props.hasButton ? { marginLeft: '20px' } : {}}
                  ref={ (div) => {
                   if (div) {
+                    let pos = this.getPosition(div);
                     this.props.getModalDimensions({
-                      pos: {
-                        x: div.offsetParent.offsetLeft,
-                        y: div.offsetParent.offsetTop
-                      },
+                      pos,
                       size: {
                         w: div.offsetWidth,
                         h: div.offsetHeight
@@ -42,7 +60,7 @@ class Modal extends Component {
                     })
                   }
                 }}>
-              {this.props.children}
+              { this.props.children }
             </div>
             :
             "" }

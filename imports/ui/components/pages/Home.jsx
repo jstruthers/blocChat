@@ -1,68 +1,76 @@
 import React, { Component } from 'react'
-import { Meteor } from 'meteor/meteor';
-import { connect } from 'react-redux';
-import  { toggleModal, createChatRoom, logMessage, deleteChatRoom, getAllChatRooms, toggleSelectedChatRoom } from '../../actions/actions';
+import { connect } from 'react-redux'
+import { browserHistory } from 'react-router'
+import { Meteor } from 'meteor/meteor'
+import { setCurrentUser } from '../../actions/actions'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 
-import ChatRoom from '../ChatRoom';
-import CreateChatRoomForm from '../forms/CreateChatRoomForm';
-import Modal from '../helpers/Modal';
-import UserAccounts from './UserAccounts'
+import Modal from '../helpers/Modal'
+import SubscribeComponent from '../helpers/SubscribeComponent'
+import ChatRoom from '../sub_components/ChatRoom'
+import Menu from '../sub_components/Menu'
+import CreateChatRoomForm from '../forms/CreateChatRoomForm'
 
 class Home extends Component {
-
+  
   componentWillMount() {
-    //this.props.subscribe('allchatRooms');
-    this.props.getAllChatRooms();
+    if (!this.props.currentUser) {
+      browserHistory.push('/userAccounts')
+    }
   }
-
-  handleChatRoomSelect(id) {
-    this.props.chatRooms.map( chatRoom => {
-      this.props.toggleSelectedChatRoom( chatRoom._id, false );
-    });
-    this.props.toggleSelectedChatRoom(id, true);
+  
+  componentWillUpdate(nextProps) {
+    if (!nextProps.currentUser) {
+      this.props.dispatch(setCurrentUser())
+      browserHistory.push('/userAccounts')
+    }
+  }
+  
+  componentDidMount() {
+    this.props.subscribe('allChatRooms')
   }
 
   render(){
-    let { deleteChatRoom,
-          toggleModal,
-          currentUser,
-          chatRoomForm,
-          submitHandler,
+    let { chatRoomForm,
+          messageForm,
           serverError,
-          chatRooms } = this.props;
+          chatRooms,
+          selectedRoom,
+          currentUser } = this.props
 
     return (
-      <div id="home" className="row">
-        <div className="column menu">
-          {serverError.error ? <div className="server-error">{serverError.error.reason}</div> : "" }
+      <div id="home" className="column">
 
-          <Modal buttonText="Create Chat Room" hasButton="true">
-            <button type="button" className="close-btn">X</button>
-            <CreateChatRoomForm onSubmit={submitHandler.bind(null, chatRoomForm)} />
-          </Modal>
+        {serverError.error
+           ? (<div className="server-error-message row">
+               {serverError.error.reason}
+             </div>)
+           : <div className="server-error-empty row" />
+        }
+        
+        <div className="row">
+          <Menu currentUser={ currentUser }
+                chatRooms={ chatRooms }
+                chatRoomForm={ chatRoomForm }
+                currentUser={ currentUser }
+          />
 
-          <ul className="chat-room-list">
-            { chatRooms.map((chatRoom, i ) => {
-
-              return (
-                <li className="chat-room-list-item" onClick={ this.handleChatRoomSelect.bind(this, chatRoom._id) } key={i}>
-                  <span>{chatRoom.title}</span>
-                  <button type="button" onClick={ deleteChatRoom.bind(null, chatRoom._id) }>
-                    X
-                  </button>
-                  <div/>
-                </li>)
-            })}
-          </ul>
-
+          <ReactCSSTransitionGroup component="div"
+                                   className="row"
+                                   transitionName="chat-room-display"
+                                   transitionEnterTimeout={500}
+                                   transitionLeaveTimeout={300}>
+            { chatRooms.filter( chatRoom => chatRoom.isSelected )
+                .map( (selectedRoom, i) => 
+                   <ChatRoom
+                     key={ `selectedRoom${i}` }
+                     currentUser={ currentUser }
+                     room={ selectedRoom }
+                     messageForm={ messageForm }
+                    /> )
+            }
+          </ReactCSSTransitionGroup>
         </div>
-        { chatRooms.filter( chatRoom => chatRoom.isSelected )
-            .map( (selectedRoom, i) => 
-                 <ChatRoom
-                   key={ `selectedRoom${i}` }
-                   icon={ ':)' }
-                   room={ selectedRoom }
-                  /> ) }
       </div>
     )
   }
@@ -72,31 +80,12 @@ class Home extends Component {
 function mapStateToProps(state) {
   return {
     serverError: state.serverError,
-    currentUser: state.ui.currentUser,
     chatRooms: state.chatRooms,
-    chatRoomForm: state.form.createChatRoomForm
+    selectedRoom: state.ui.selectedRoom,
+    chatRoomForm: state.form.createChatRoomForm,
+    messageForm: state.form.messageForm,
+    currentUser: Meteor.user()
   }
 }
 
-function mapDispatchToProps(dispatch){
-  return {
-    submitHandler: (form) => {
-      dispatch(createChatRoom(form.title.value));
-      dispatch(toggleModal(false));
-    },
-    getAllChatRooms: () => {
-      dispatch(getAllChatRooms())
-    },
-    deleteChatRoom: (id) => {
-      dispatch(deleteChatRoom(id))
-    },
-    toggleSelectedChatRoom: (id, bool) => {
-      dispatch(toggleSelectedChatRoom(id, bool))
-    },
-    toggleModal: (option) => {
-      dispatch(toggleModal(option))
-    }
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps)(SubscribeComponent(Home));
