@@ -10,19 +10,18 @@ $red = #ff4530;
 #header
   font-size 2em
   display flex
-  min-width vw
+  min-width 800px
   height 120px
   justify-content space-between
 
 .logo
   max-width 100%
-  margin-right 30px
-  margin-top 30px
+  margin 30px 30px 0 30px
   height auto
   width auto\9 /* ie8 */
 
 .user-profile-header
-  margin-left 30px
+  margin-left 5%
   margin-top 30px
   padding-left 10px
 
@@ -68,6 +67,9 @@ html
     flex-direction column
     margin 0px 20px
 
+#shade
+  transition background-color 300ms ease-out
+
 .dim
   position absolute
   top 0
@@ -81,10 +83,9 @@ html
 
 #home
   position relative
-  width 800px
-  margin 50px auto
-  border-radius 5px
-  background-color hsla(0, 0%, 0%, 35%)
+  min-width 800px
+  width 100%
+  margin-top 50px
 
 .row
   position relative
@@ -102,70 +103,87 @@ html
 /*  MENU                      */
 /******************************/
 
-.menu
-  padding 10px
-
 .server-error
   color $red
   text-align center
   font-size 18px
   line-height 1.3em
+  &-message
+    position relative
+    margin 10px auto
+    width 400px
+    padding 5px
+    border-radius 5px
+    background-color red
+    color white
+  &-empty
+    height 1.3em
 
 /******************************/
 /*  CHAT ROOM                 */
 /******************************/
 
 .chat-room
-  border-left 3px solid purple
-  width 500px
-  padding 10px
-
+  border 3px solid purple
+  padding 20px 0
+  width 85%
+  min-width 500px
+  margin-left 50px
+  
+  border-radius 5px
+  background-color hsla(0, 0%, 0%, 35%)
   &-list
-    width 66%
-    margin 10px
+    width 280px
+    min-width 280px
+    padding 20px
+    margin-left 50px
+    
+    border-radius 5px
+    border 3px solid purple
+    background-color hsla(0, 0%, 0%, 35%)
 
-  &-list-title
+    ul
+      width 100%
+      margin 10px 0
+  &-list-header
     font-size 2em
     border-bottom 2px solid aqua
-
   &-list-item
     padding 10px
+    width 100%
+    position relative
+    align-items center
 
     font-size 1.6em
     color purple
     &:hover
-      cursor pointer
-      color ghostwhite
       button
-        visibility visible
-        float right
-    span
-      float left
-    div
-      clear both
+          visibility visible
+    &-title
+      &:hover, &-selected
+        cursor pointer
+        color ghostwhite
     button
       visibility hidden
-
-  &-header
-    width 200px
-    border-bottom 2px solid aqua
-
+    &-author
+      font-size 0.5em
+      color lightgray
+  &-selected
+    color white
   &-title
-    font-size 1.4em
-
-  &-occupant-list
-    height 0px
-
+    font-size 2em
+    margin-bottom 15px
+    margin-left 2.5%
+    border-bottom 2px solid aqua
   &-message-box
-    margin 15px
-    width 440px
+    width 95%
+    margin auto
     height 300px
     
     overflow scroll
     border 1px solid purple
     border-radius 15px
     background-color hsla(0, 100%, 100%, 35%)
-  
   &-message
     div
       padding 10px
@@ -177,16 +195,51 @@ html
     &-time, &-date
       padding-left 10px
       font-size 0.8em
-
   &-input-field
-    margin 15px
-    width 440px
-
+    margin-top 15px
+    margin-left 2.5%
+    width 100%
+  textarea
+    width 95%
+    padding 5px
+    border-radius 5px
+    resize vertical
   &-username
     display inline-block
     margin-bottom 10px
-    width 200px
+    padding 5px
     font-size 1.2em
+    border-bottom 2px solid aqua
+  
+/******************************/
+/*  ANIMATIONS                */
+/******************************/
+
+  &-add-remove
+    &-enter
+      opacity 0.01
+    &-enter.chat-room-add-remove-enter-active
+      opacity 1
+      transition opacity 300ms ease-in
+    &-leave
+      opacity 1
+      left 0
+    &-leave.chat-room-add-remove-leave-active
+      opacity 0.01
+      left 25%
+      transition opacity 300ms ease-in, left 300ms ease-in
+  &-display
+    &-enter
+      opacity 0.01
+    &-enter.chat-room-display-enter-active
+      opacity 1
+      transition opacity 300ms ease-in
+    &-leave
+      opacity 1
+      left 0
+    &-leave.chat-room-display-leave-active
+      opacity 0.01
+      transition opacity 300ms ease-in
     
 /******************************/
 /*  USER ACCOUNTS             */
@@ -247,6 +300,10 @@ html
 /*  BUTTONS                   */
 /******************************/
 
+button
+  &:hover
+    cursor: pointer
+
 button[type="submit"]
   position relative
   width auto
@@ -290,19 +347,19 @@ button[disabled]
     color white
     background purple
 
-.close-btn
-  display block
-  position absolute
-  
+.close-btn, .close-btn-modal
   border-radius 5px
   border 1px solid $red
   color $red
   outline 0
   background white
   width 2em
-  top -20px
-  left 198px
   transition 0.2s
   &:hover
     color white
     background $red
+  &-modal
+    top -20px
+    left 198px
+    display block
+    position absolute

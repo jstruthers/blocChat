@@ -79,9 +79,16 @@ export function logMessage(id, message){
   }
 }
 
+export function updateSelectedRoom () {
+  return {
+    type: 'UPDATE_SELECTED_ROOM'
+  }
+}
+
 export function toggleSelectedChatRoom(id, bool){
   return dispatch => {
     callMethodPromise('toggleSelectedChatRoom', id, bool)
+      .then(() => dispatch(updateSelectedRoom()))
       .then(data => dispatch(getAllChatRooms()))
       .catch(error=>{
         dispatch({
@@ -109,5 +116,12 @@ export function getModalDimensions({pos, size}) {
     type: 'GET_MODAL_DIMENSIONS',
     pos,
     size
+  }
+}
+
+export function setCurrentUser() {
+  return {
+    type: 'SET_CURRENT_USER',
+    currentUser: Meteor.users.find().fetch()
   }
 }
