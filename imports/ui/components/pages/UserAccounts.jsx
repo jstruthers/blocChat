@@ -115,7 +115,7 @@ function mapDispatchToProps(dispatch){
           if (error) {
             userAccounts.setState({newUserError: `* ${error.reason}`});
           } else {
-            userAccounts.goToHome(userAccounts)
+            userAccounts.goToHome(dispatch, clearForm, toggleModal, setCurrentUser)
           }
         }
       );
