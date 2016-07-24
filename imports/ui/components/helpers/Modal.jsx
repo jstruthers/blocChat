@@ -50,14 +50,26 @@ class Modal extends Component {
                  style={ this.props.hasButton ? { marginLeft: '20px' } : {}}
                  ref={ (div) => {
                   if (div) {
-                    let pos = this.getPosition(div);
-                    this.props.getModalDimensions({
-                      pos,
-                      size: {
-                        w: div.offsetWidth,
-                        h: div.offsetHeight
-                      }
-                    })
+                    let pos = this.getPosition(div)
+                    if (!this.props.modalAttrs) {
+                      this.props.getModalDimensions({
+                        pos,
+                        size: {
+                          w: div.offsetWidth,
+                          h: div.offsetHeight
+                        }
+                      })
+                    } else if (
+                      this.props.modalAttrs.x !== pos.x
+                      && this.props.modalAttrs.y !== pos.y) {
+                      this.props.getModalDimensions({
+                        pos,
+                        size: {
+                          w: div.offsetWidth,
+                          h: div.offsetHeight
+                        }
+                      })
+                    }
                   }
                 }}>
               { this.props.children }
@@ -71,7 +83,8 @@ class Modal extends Component {
 
 function mapStateToProps(state) {
   return {
-    modalIsOpen: state.ui.modal.isOpen
+    modalIsOpen: state.ui.modal.isOpen,
+    modalAttrs: state.ui.modal.pos
   }
 }
 

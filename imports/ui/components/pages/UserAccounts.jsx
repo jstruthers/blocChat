@@ -134,7 +134,7 @@ function mapDispatchToProps(dispatch){
             userAccounts.goToHome(dispatch, clearForm, toggleModal, setCurrentUser)
           }
         }
-      );
+      )
     }
   }
 }
